@@ -5,11 +5,11 @@ from PIL import Image
 
 import os
 import re
-ppnn='55'
+ppnn='100100'
 img = Image.open(f'{ppnn}/{ppnn}.png')
 
 Img = img.convert('L')
-
+imggg=0
 threshold = 240
 table = []
 for i in range(256):
@@ -132,12 +132,13 @@ while True:
         f.write(f'[{gogo[0]},{gogo[1]}] ')
         
         
-        img[gogo[0]][gogo[1]]=0,255,0
-        img2=cv2.resize(img, (500,500), interpolation=cv2.INTER_NEAREST)
-        cv2.imshow('image', img2)
-
-        if cv2.waitKey(1) & 0xFF == 27:
-            break
+        
+        if imggg==0:
+            img[gogo[0]][gogo[1]]=0,255,0
+            img2=cv2.resize(img, (1000,1000), interpolation=cv2.INTER_NEAREST)
+            cv2.imshow('image', img2)
+            if cv2.waitKey(1) & 0xFF == 27:
+                break
     f.write("\n")
     f.close()
     print(f'走了{a-1}步')
@@ -146,3 +147,4 @@ while True:
     f = open(f'{ppnn}/test2.txt', mode='a',encoding='utf-8')
     f.write(f'{99/a}+')
     f.close()
+
