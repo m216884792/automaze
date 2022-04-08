@@ -1,4 +1,3 @@
-
 import cv2
 import numpy as np
 from PIL import ImageGrab
@@ -53,21 +52,30 @@ def ba(i1,i2):
     except:
         return True
 
+
+
 def randomwsad(gg):
+    global ax
     #上下左右
     wsad=[[-1,0],[1,0],[0,-1],[0,1]]   
     #隨機行走
     t1,t2=gg
     seq=[]
     if wb[t1-1][t2]==0 or wb[t1-1][t2]==99:
-        seq.append(0)
+        if ax!=1:
+         seq.append(0)
     if wb[t1+1][t2]==0 or wb[t1-1][t2]==99:
-        seq.append(1)
+        if ax!=0:
+         seq.append(1)
     if wb[t1][t2-1]==0 or wb[t1-1][t2]==99:
-        seq.append(2)
+        if ax!=3:
+          seq.append(2)
     if wb[t1][t2+1]==0 or wb[t1-1][t2]==99:
-        seq.append(3)
-    return wsad[random.choice(seq)]
+        if ax!=2:
+         seq.append(3)
+    if seq!=[]:
+        ax=random.choice(seq)
+    return wsad[ax]
 
 
 #起始位置
@@ -79,9 +87,10 @@ wb[0][wb[0].index(0)]=-10
 
 
 
-for ik in np.arange(0,1):
+for ik in np.arange(0,5):
     a=0
     gogo=start1
+    ax=4
     f = open(f'{ppnn}/test.txt', mode='a',encoding='utf-8')
     while True:
         a+=1
@@ -89,8 +98,10 @@ for ik in np.arange(0,1):
         gogo=[gogo[0]+r1,gogo[1]+r2]#更新行走位置
         if ba(gogo[0],gogo[1])==False:#走到死路
             wb[gogo[0]][gogo[1]]=1
+            ax=4
         elif ba(gogo[0],gogo[1])==True:
             print('走到終點')
+            ax=4
             break
 
         f.write(f'[{gogo[0]},{gogo[1]}] ')#儲存路徑
@@ -105,9 +116,9 @@ for ik in np.arange(0,1):
                     if wb[i1][i2]==3:
                         img[i1][i2]=255,0,0
             img[gogo[0]][gogo[1]]=0,255,0
-            img=cv2.resize(img, (500,500), interpolation=cv2.INTER_NEAREST)
+            img=cv2.resize(img, (1000,1000), interpolation=cv2.INTER_NEAREST)
             cv2.imshow('image', img)
-            if cv2.waitKey(5) & 0xFF == 27:
+            if cv2.waitKey(1) & 0xFF == 27:
                 break
 
     f.write("\n")
